@@ -4,6 +4,7 @@ var disks = require('nodejs-disks');
 var crypto = require('crypto');
 var fs = require('fs');
 var path = require('path');
+var exec = require('child_process').exec;
 var _ = require('lodash');
 var lastDriveList, timer, answers;
 
@@ -77,7 +78,13 @@ function createAdminFolder(drive) {
         if (err) {
           console.log(err);
         }
-        console.log("\nAn empty folder named " + adminFolderName + " has been created on this USB stick. Do not rename this folder. You may now unplug the USB stick. Setup is complete.\n");
+        exec('pumount', [disk.mountmount], function(err) {
+          if (!err) {
+            console.log("\nUSB stick successfully unmounted.")
+          }
+          console.log("\nAn empty folder named " + adminFolderName + " has been created on this USB stick. Do not rename this folder. You may now unplug the USB stick. Setup is complete.\n");
+        });
+        exec()
       });
     });
   });
