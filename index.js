@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var fs = require('fs');
 var path = require('path');
 var ncp = require('ncp');
@@ -5,9 +7,9 @@ var rimraf = require('rimraf');
 var disks = require('nodejs-disks');
 var _ = require('lodash');
 var config = require('nconf').argv().env().file({
-  file: path.resolve('.', 'config.json')
+  file: path.join(__dirname, 'config.json')
 });
-var swapFolder = path.resolve('.', config.get('swapFolder'));
+var swapFolder = path.join(__dirname, config.get('swapFolder'));
 var lastDriveList;
 
 disks.drives(function(err, drives) {

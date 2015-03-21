@@ -8,8 +8,9 @@
     "postinstall": "node setup.js"
   },
   "bin": {
-    "pidrop": "./bin.js"
+    "pidrop": "./index.js"
   },
+  "preferGlobal": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/imakewebthings/node-pidrop.git"
