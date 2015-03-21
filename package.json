@@ -8,7 +8,7 @@
     "postinstall": "node setup.js"
   },
   "bin": {
-    "pidrop": "./index.js"
+    "pidrop": "./bin.js"
   },
   "repository": {
     "type": "git",
