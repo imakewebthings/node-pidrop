@@ -2,6 +2,7 @@
 
 var fs = require('fs');
 var path = require('path');
+var exec = require('child_process').exec;
 var ncp = require('ncp');
 var rimraf = require('rimraf');
 var disks = require('nodejs-disks');
@@ -14,6 +15,7 @@ var lastDriveList;
 
 disks.drives(function(err, drives) {
   lastDriveList = drives;
+  console.log('Checking for new drives');
   setInterval(checkForNewDrives, 1000);
 });
 
@@ -22,7 +24,6 @@ function checkForNewDrives() {
     var diff = _.difference(drives, lastDriveList);
 
     lastDriveList = drives;
-    console.log('Checking for new drives');
     if (!diff.length) {
       return;
     }
@@ -38,35 +39,46 @@ function checkForAdminFolder(drive) {
     }
     var adminPath = path.resolve(disk.mountpoint, config.get('adminFolder'));
     fs.readdir(adminPath, function(err) {
-      var userPath = path.resolve(disk.mountpoint, config.get('userFolder'));
       if (err) {
         console.log('No admin folder found');
-        return copyUserFolder(userPath);
+        return copyUserFolder(disk.mountmount);
       }
-      copyAdminFolder(adminPath);
+      copyAdminFolder(disk.mountpoint);
     });
   });
 }
 
-function copyAdminFolder(folderPath) {
+function copyAdminFolder(mountpoint) {
+  var adminPath = path.resolve(mountpoint, config.get('adminFolder'));
   rimraf(swapFolder, function(err) {
     if (err) {
       return console.log(err);
     }
-    ncp(folderPath, swapFolder, function(err) {
+    ncp(adminPath, swapFolder, function(err) {
       if (err) {
         return console.log(err);
       }
       console.log('Admin folder found, files uploaded');
+      unmount(mountpoint);
     });
   });
 }
 
-function copyUserFolder(folderPath) {
-  ncp(swapFolder, folderPath, function(err) {
+function copyUserFolder(mountpoint) {
+  var userPath = path.resolve(mountpoint, config.get('userFolder'));
+  ncp(swapFolder, userPath, function(err) {
     if (err) {
       return console.log(err);
     }
     console.log('Files downloaded to user folder');
+    unmount(mountpoint);
+  });
+}
+
+function unmount(mountpoint) {
+  exec('pumount ' + mountpoint, function(err, stdout, stderr) {
+    if (!err) {
+      console.log(mountpoint + ' unmounted');
+    }
   });
 }
