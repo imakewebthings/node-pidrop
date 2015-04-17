@@ -17,10 +17,6 @@ inquirer.prompt([{
   name: 'userFolder',
   message: "When somebody plugs in a USB thumb drive, files will be downloaded to a special folder on that drive. What would you like to name that folder?",
   default: 'pidrop-downloads'
-}, {
-  name: 'swapFolder',
-  message: "The files that are uploaded from your USB thumb drive and downloaded to a user's drive are stored in a folder on the Pi. What would you like to name that filder?",
-  default: 'swap'
 }], processAnswers);
 
 function processAnswers(promptAnswers) {
@@ -71,7 +67,7 @@ function createAdminFolder(drive) {
         return console.log(err);
       }
       config.set('adminFolder', adminFolderName);
-      config.set('swapFolder', answers.swapFolder);
+      config.set('swapFolder', 'swap');
       config.set('userFolder', answers.userFolder);
       config.save(function(err) {
         if (err) {
