@@ -1,6 +1,6 @@
 {
   "name": "pidrop",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Turn a Raspberry Pi into a device similar to a dead drop",
   "main": "index.js",
   "scripts": {

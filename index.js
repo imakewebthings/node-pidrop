@@ -41,7 +41,7 @@ function checkForAdminFolder(drive) {
     fs.readdir(adminPath, function(err) {
       if (err) {
         console.log('No admin folder found');
-        return copyUserFolder(disk.mountmount);
+        return copyUserFolder(disk.mountpoint);
       }
       copyAdminFolder(disk.mountpoint);
     });
