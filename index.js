@@ -76,9 +76,12 @@ function copyUserFolder(mountpoint) {
 }
 
 function unmount(mountpoint) {
-  exec('pumount ' + mountpoint, function(err, stdout, stderr) {
-    if (!err) {
+  setTimeout(function() {
+    exec('pumount ' + mountpoint, function(err, stdout, stderr) {
+      if (err) {
+        return console.log(err);
+      }
       console.log(mountpoint + ' unmounted');
-    }
-  });
+    });
+  }, 200);
 }
